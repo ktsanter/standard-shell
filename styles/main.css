@@ -30,6 +30,30 @@ body {
   margin-bottom: 0.4em;
 }
 
+.standard-contents {}
+
+.standard-section {
+  margin-bottom: 2.0em;
+}
+
+.standard-section-label {
+  color: #093c44;
+  background-color: white;
+  border: 1px solid #093c44;
+  border-radius: 6px;
+  font-size: 1em;
+  padding-left: 0.4em;
+  margin-top: 0.4em;
+}
+
+.standard-section-contents {
+  margin-top: 0.4em;
+}
+
+.standard-button {
+  display: inline-block;
+}
+
 /*-- standard error and notice tools --*/
 .standard_error {
   display: none;
@@ -52,3 +76,22 @@ body {
   margin-right: 0.2em;
 }
 /*-- end of standard notice and error --*/
+
+/*-- Markdown example --*/
+#outputMarkdown {
+  display: inline-block;
+  border: 1px solid black;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  min-width: 4em;
+  min-height: 1.4em;
+  margin-top: 0.1em;
+}
+/*-- end of Markdown example --*/
+
+/*-- rendered copy style --*/
+#copyRenderedTarget {
+  color: black;
+  background-color: white;
+}
+/*-- end of rendered copy style --*/

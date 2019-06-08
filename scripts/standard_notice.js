@@ -7,17 +7,17 @@ class StandardNotice {
   }
   
   _renderErrorNotice(attachTo) {
-    this._errorNotice = CreateElement._createDiv(null, 'standard_error', '')
+    this._errorNotice = CreateElement.createDiv(null, 'standard_error', '')
     attachTo.appendChild(this._errorNotice);
   }
   
    _renderNormalNotice(attachTo) {
-    var container = CreateElement._createDiv(null, 'standard-notice');
+    var container = CreateElement.createDiv(null, 'standard-notice');
     attachTo.appendChild(container);
     
-    this._normalNotice = CreateElement._createDiv('notice', 'notice');
+    this._normalNotice = CreateElement.createDiv('notice', 'notice');
     container.appendChild(this._normalNotice);
-    this._elemNoticeSpinner = CreateElement._createIcon('noticeSpinner', 'fa fa-spinner fa-pulse fa-3x fa-fw"');
+    this._elemNoticeSpinner = CreateElement.createIcon('noticeSpinner', 'fa fa-spinner fa-pulse fa-3x fa-fw"');
     container.appendChild(this._elemNoticeSpinner);
   }  
   

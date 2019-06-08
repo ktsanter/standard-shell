@@ -5,6 +5,7 @@ define(function (require) {
   require('create_element');
   
   /*-- optional components --*/
+  require('markdowntohtml');
   require('clipboard_copy');
 
   document.addEventListener('DOMContentLoaded', app.init());

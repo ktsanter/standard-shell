@@ -1,9 +1,11 @@
 "use strict";
 //-----------------------------------------------------------------------------------
-// standard shell
+// standard shell, includes: 
+//  - Google web app API
+//  - Markdown conversionwith
+//  - clipboard copy
 //-----------------------------------------------------------------------------------
-// TODO: add clipboard stuff (make class)
-// TODO: add markdown stuff
+// TODO: 
 //-----------------------------------------------------------------------------------
 
 const app = function () {
@@ -30,7 +32,7 @@ const app = function () {
 		if (_initializeSettings(expectedQueryParams)) {
       var data = await _loadInitialData();
       if (data) {
-        _renderPage();
+        page.body.appendChild(_renderPage());
       }
 		}
   }
@@ -85,69 +87,105 @@ const app = function () {
 	// page rendering
 	//-----------------------------------------------------------------------------  
   function _renderStandardElements() {
-
-    var title = CreateElement._createDiv(null, 'standard-title', appname);
+    var title = CreateElement.createDiv(null, 'standard-title', appname);
     page.body.appendChild(title);
     
     page.notice = new StandardNotice(page.body, title);
   }
 
   function _renderPage() {
-    page.body.appendChild(CreateElement._createDiv(null, null, '_renderPage'));
+    var container = CreateElement.createDiv(null, 'standard-contents');
+    
+    container.appendChild(_renderParams());
+    container.appendChild(_renderMarkdownExample());
+    container.appendChild(_renderCopyToClipboardExample());
+    
+    return container;
+  }
+    
+  function _renderParams() {
+    var container = CreateElement.createDiv(null, 'standard-section');
+    
+    container.appendChild(CreateElement.createDiv(null, 'standard-section-label', 'query parameters'));
+    var s = 'param1=' + settings.param1 + '<br>param2=' + settings.param2;
+    container.appendChild(CreateElement.createDiv(null, 'standard-section-contents', s));
+  
+    return container;
   }
   
-  
-	//------------------------------------------------------------------
-	// process MarkDown
-	//------------------------------------------------------------------  
-  function _convertMarkdownToHTML(text) {
-    var reader = new commonmark.Parser();
-    var writer = new commonmark.HtmlRenderer();
-    var parsed = reader.parse(text);
-    var result = writer.render(parsed);
+  function _renderMarkdownExample() {
+    var container = CreateElement.createDiv(null, 'standard-section');
+    
+    container.appendChild(CreateElement.createDiv(null, 'standard-section-label', 'Markdown example'));
+    var contents = CreateElement.createDiv(null, 'standard-section-contents');
+    container.appendChild(contents);
+    
+    var elem = CreateElement.createTextArea('inputMarkdown', null);
+    contents.appendChild(elem);
+    elem.rows = 5;
+    elem.cols = 80;
+    elem.placeholder = 'enter Markdown text';
+    elem.addEventListener('input', _handleMarkdownInput);    
+        
+    contents.appendChild(CreateElement.createBR(null, null));
+    
+    elem = CreateElement.createDiv('outputMarkdown', null);
+    contents.appendChild(elem);
+    
 
-    return result;
+    return container;
+  }  
+  
+  function _renderCopyToClipboardExample() {
+    var container = CreateElement.createDiv(null, 'standard-section');
+    
+    container.appendChild(CreateElement.createDiv(null, 'standard-section-label', 'clipboard copy example'));
+    var elem = CreateElement.createDiv(null, 'standard-section-contents');
+    container.appendChild(elem);
+    
+    elem = CreateElement.createTextInput('inputCopy', null)
+    container.appendChild(elem);
+    elem.placeholder = 'enter text to copy or render';
+    
+    container.appendChild(CreateElement.createButton(null, 'standard-button', 'copy', null, e => _handleCopy1(e)));
+    container.appendChild(CreateElement.createButton(null, 'standard-button', 'copy rendered', null, e => _handleCopy2(e)));
+    
+    return container;
   }
- 
+
   //---------------------------------------
   // clipboard functions
   //----------------------------------------
   function _copyToClipboard(txt) {
-    if (!page._clipboard) page._clipboard = new ClipboardCopy();
+    if (!page._clipboard) page._clipboard = new ClipboardCopy(page.body, 'plain');
 
-    page._clipboard._copyToClipboard(txt);
+    page._clipboard.copyToClipboard(txt);
 	}	
 
   function _copyRenderedToClipboard(txt) {
-    var container, elemButton, elemTarget;
-    
-    if (!page._renderedclipboardcontainer) {
-      container = CreateElement._createDiv('renderedCopyContainer', 'renderedcopy');
-      elemButton = CreateElement._createButton('btnCopyRendered', null, 'hide me');
-      elemTarget = CreateElement._createDiv('divCopyRenderedTarget', null);
-      elemButton.setAttribute('data-clipboard-target', '#' + elemTarget.id);
-      var junk = new Clipboard(elemButton); 
-      
-      container.appendChild(elemButton);
-      container.appendChild(elemTarget);
-      page._renderedclipboardcontainer = container;
-      page.body.appendChild(page._renderedclipboardcontainer);
-      
-    } else {
-      container = document.getElementById('renderedCopyContainer');
-      elemButton = document.getElementById('btnCopyRendered');
-      elemTarget = document.getElementById('divCopyRenderedTarget');
-    }
-    
-    container.style.display = 'block';
-    elemTarget.innerHTML = txt;
-    elemButton.click();
-    container.style.display = 'none';
-  }
+    if (!page._renderedclipboard) page._renderedclipboard = new ClipboardCopy(page.body, 'rendered');
+
+    page._clipboard.copyRenderedToClipboard(txt);
+	}	
    
 	//------------------------------------------------------------------
 	// handlers
 	//------------------------------------------------------------------    
+  function _handleMarkdownInput(e) {
+    var md = document.getElementById('inputMarkdown').value;
+    var html = MarkdownToHTML.convert(md);
+    document.getElementById('outputMarkdown').innerHTML = html;
+  }
+  
+  function _handleCopy1(e) {
+    var str = document.getElementById('inputCopy').value;
+    _copyToClipboard(str);
+  }
+  
+  function _handleCopy2(e) {
+    var str = document.getElementById('inputCopy').value;
+    _copyRenderedToClipboard(MarkdownToHTML.convert(str));
+  }
   
 	//---------------------------------------
 	// return from wrapper function
