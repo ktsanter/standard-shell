@@ -15,7 +15,7 @@ class StandardNotice {
     var container = CreateElement.createDiv(null, 'standard-notice');
     attachTo.appendChild(container);
     
-    this._normalNotice = CreateElement.createDiv('notice', 'notice');
+    this._normalNotice = CreateElement.createDiv(null, null);
     container.appendChild(this._normalNotice);
     this._elemNoticeSpinner = CreateElement.createIcon('noticeSpinner', 'fa fa-spinner fa-pulse fa-3x fa-fw"');
     container.appendChild(this._elemNoticeSpinner);

@@ -1,11 +1,9 @@
+"use strict";
 //---------------------------------------------------------------
 // Google Web API class 
 //---------------------------------------------------------------
-"use strict";
-
-//
 // TODO: 
-//
+//---------------------------------------------------------------
 
 class googleSheetWebAPI {
   //--------------------------------------------------------------
@@ -28,14 +26,12 @@ class googleSheetWebAPI {
 
       if (!json.success) {
         var errmsg = '*ERROR: in ' + METHOD_TITLE + ', ' + json.details;
-        console.log('calling funcError');
         if (objNotice != null) objNotice.reportError(METHOD_TITLE, {name: 'API failure', message: errmsg});
         console.log(errmsg);
       }
       return json;
       
     } catch (error) {
-      console.log('calling funcError from catch ' + error);
       if (objNotice != null) objNotice.reportError(METHOD_TITLE, error);
       console.log('**ERROR: in ' + METHOD_TITLE + ', ' + error);
     }
