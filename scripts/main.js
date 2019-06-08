@@ -165,7 +165,7 @@ const app = function () {
   function _copyRenderedToClipboard(txt) {
     if (!page._renderedclipboard) page._renderedclipboard = new ClipboardCopy(page.body, 'rendered');
 
-    page._clipboard.copyRenderedToClipboard(txt);
+    page._renderedclipboard.copyRenderedToClipboard(txt);
 	}	
    
 	//------------------------------------------------------------------
