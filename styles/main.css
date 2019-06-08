@@ -1,0 +1,54 @@
+/*-------------------------------------------------------------------*/
+ /* styling for standard shell app                                   */
+ /*------------------------------------------------------------------*/
+
+/*----------------------------------*/
+/* Michigan Virtual brand standards */
+/* light teal:  #2f8d98             */
+/* dark teal:   #115e6e             */
+/* deep teal:   #093c44             */
+/* green:       #b5cd34             */
+/* orange:      #b5cd34             */
+/* light gray:  #6d6e71             */
+/* dark gray:   #414042             */
+/*----------------------------------*/
+body {
+	color: black;
+	background-color: #eee;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+}
+
+.standard-title {
+	color: white;
+	background-color: #093c44;
+  border: 1px solid white;
+  border-radius: 6px;
+  font-size: 1.2em;
+  padding-left: 0.4em;
+  margin-top: 0em;
+  margin-bottom: 0.4em;
+}
+
+/*-- standard error and notice tools --*/
+.standard_error {
+  display: none;
+  font-style: italic;
+  color: blue;
+  margin-bottom: 0.4em;;
+}
+
+.standard-notice {
+  float: right;  
+  font-size: 0.9em;
+  font-style: italic;
+  margin-left: 0.4em;
+  margin-right: 0.2em;
+}
+
+#noticeSpinner {
+  font-size: 0.9em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+/*-- end of standard notice and error --*/
