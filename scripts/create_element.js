@@ -94,9 +94,19 @@ class CreateElement {
     return elem;
   }
 
-  static createSelect(id, classList, changehandler) {
+  static createSelect(id, classList, changehandler, values) {
     var elem = CreateElement._createElement('select', id, classList);
     if (changehandler) elem.addEventListener('change', changehandler, false);
+    
+    if (values) {
+      for (var i = 0; i < values.length; i++) {
+        var opt = CreateElement._createElement('option', null, null);
+        if (values[i].hasOwnProperty('id')) opt.id = values[i].id;
+        if (values[i].hasOwnProperty('value')) opt.value = values[i].value;
+        opt.text = values[i].textval;
+        elem.appendChild(opt);
+      }
+    }      
     
     return elem;
   }
@@ -152,5 +162,38 @@ class CreateElement {
     container.appendChild(label);
 
     return container;
+  }
+  
+   static createTable(id, classList, headers, contents, captionLabel) {
+    var table = CreateElement._createElement(id, classList);
+    
+    if (captionLabel) {
+      var caption = table.createCaption();
+      caption.innerHTML = captionLabel;
+    }
+    
+    if (headers) {
+      var tr = CreateElement._createElement('tr', null, null);
+      table.appendChild(tr);
+      for (var i = 0; i < headers.length; i++) {
+        var th = CreateElement._createElement('th', null, null);
+        th.innerHTML = headers[i];
+        tr.appendChild(th);
+      }
+    }
+    
+    if (contents) {
+      for (var i = 0; i < contents.length; i++) {
+        var tr = CreateElement._createElement('tr', null, null);
+        table.appendChild(tr);
+        for (var j = 0; j < contents[i].length; j++) {
+          var td = CreateElement._createElement('td', null, null);
+          td.innerHTML = contents[i][j];
+          tr.appendChild(td);
+        }
+      }
+    }
+    
+    return table;
   }
 }
