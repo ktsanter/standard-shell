@@ -165,7 +165,7 @@ class CreateElement {
   }
   
    static createTable(id, classList, headers, contents, captionLabel) {
-    var table = CreateElement._createElement(id, classList);
+    var table = CreateElement._createElement('table', id, classList);
     
     if (captionLabel) {
       var caption = table.createCaption();
