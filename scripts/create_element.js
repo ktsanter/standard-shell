@@ -32,7 +32,7 @@ class CreateElement {
     return elem;
   }
   
-  staticcreateSpan(id, classList, html) {
+  static createSpan(id, classList, html) {
     var elem = CreateElement._createElement('span', id, classList);
     if (html != null) elem.innerHTML = html;
     
@@ -136,7 +136,7 @@ class CreateElement {
   }
   
   static createRadio(id, classList, groupName, buttonValue, displayValue, checked, handler) {
-    var container = CreateElement._createSpan(null, null);
+    var container = CreateElement.createSpan(null, null);
     
     var elem = CreateElement._createElement('input', id, classList);
     elem.type = 'radio';
