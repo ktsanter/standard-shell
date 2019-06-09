@@ -7,6 +7,7 @@ define(function (require) {
   /*-- optional components --*/
   require('markdowntohtml');
   require('clipboard_copy');
+  require('date_time');
 
   document.addEventListener('DOMContentLoaded', app.init());
 });

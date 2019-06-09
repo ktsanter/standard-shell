@@ -4,6 +4,7 @@
 //  - Google web app API
 //  - Markdown conversionwith
 //  - clipboard copy
+//  - date/time
 //-----------------------------------------------------------------------------------
 // TODO: 
 //-----------------------------------------------------------------------------------
@@ -99,6 +100,7 @@ const app = function () {
     container.appendChild(_renderParams());
     container.appendChild(_renderMarkdownExample());
     container.appendChild(_renderCopyToClipboardExample());
+    container.appendChild(_renderDateTimeExample());
     
     return container;
   }
@@ -149,6 +151,19 @@ const app = function () {
     
     container.appendChild(CreateElement.createButton(null, 'standard-button', 'copy', null, e => _handleCopy1(e)));
     container.appendChild(CreateElement.createButton(null, 'standard-button', 'copy rendered', null, e => _handleCopy2(e)));
+    
+    return container;
+  }
+  
+  function _renderDateTimeExample() {
+    var container = CreateElement.createDiv(null, 'standard-section');
+    
+    container.appendChild(CreateElement.createDiv(null, 'standard-section-label', 'date/time example'));
+    var contents = CreateElement.createDiv(null, 'standard-section-contents');
+    container.appendChild(contents);
+    
+    var dateNow = DateTime.formatDate(Date.now());
+    contents.appendChild(CreateElement.createDiv(null, null, 'current date is ' + dateNow));
     
     return container;
   }
