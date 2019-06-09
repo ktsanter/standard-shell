@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------------
 class DateTime {
   constructor() {
-    this._version = '0.02';
+    this._version = '0.03';
   }
   
   static isValidDate(str) {
@@ -49,6 +49,22 @@ class DateTime {
     } else if ((daysLate + daysInWindow) >= 0) {
       result = 0;
     }
+
+    return result;
+  }
+  
+  static isNowInWeek(date) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    var parsedDate = new Date(Date.parse(date));
+    var now = new Date();
+    
+    var utcDate = Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
+    var utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+    var result = false;
+    var daysLater = Math.floor(utcNow - utcDate) / _MS_PER_DAY;
+    if (daysLater >= 0 && daysLater < 7) result = true;
 
     return result;
   }
