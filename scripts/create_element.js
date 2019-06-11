@@ -227,9 +227,9 @@ class CreateElement {
   static createSpinner(id, classList, value, minval, maxval, step) {
     var elem = CreateElement._createElement('input', id, classList);
     elem.type = 'number';
-    if (value) elem.value = value;
-    if (minval) elem.min = minval;
-    if (maxval) elem.max = maxval;
+    if (value != null) elem.value = value;
+    if (minval != null) elem.min = minval;
+    if (maxval != null) elem.max = maxval;
     if (step) elem.step = step;
     
     return elem;
