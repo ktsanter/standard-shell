@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------------
 class DateTime {
   constructor() {
-    this._version = '0.03';
+    this._version = '0.04';
   }
   
   static isValidDate(str) {
@@ -54,11 +54,13 @@ class DateTime {
     return formattedDate;
   }
 
-  static compareDateToNow(date, daysInWindow) {
+  static compareDateToNow(date, daysInWindow, debugNow) {
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
     var parsedDate = new Date(Date.parse(date));
     var now = new Date();
+    
+    if (debugNow != null) now = new Date(Date.parse(debugNow));
     
     var utc1 = Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
     var utc2 = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
@@ -72,15 +74,17 @@ class DateTime {
     } else if ((daysLate + daysInWindow) >= 0) {
       result = 0;
     }
-
+    
     return result;
   }
   
-  static isNowInWeek(date) {
+  static isNowInWeek(date, debugNow) {
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
     var parsedDate = new Date(Date.parse(date));
     var now = new Date();
+
+    if (debugNow != null) now = new Date(Date.parse(debugNow));
     
     var utcDate = Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
     var utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
