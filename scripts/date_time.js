@@ -6,7 +6,11 @@
 //-----------------------------------------------------------------------------------
 class DateTime {
   constructor() {
-    this._version = '0.04';
+    this_version = '0.04';
+  }
+  
+  static _getDebugNow() {
+    return null;//'10/13/2019';
   }
   
   static isValidDate(str) {
@@ -53,13 +57,14 @@ class DateTime {
     
     return formattedDate;
   }
-
-  static compareDateToNow(date, daysInWindow, debugNow) {
+    
+  static compareDateToNow(date, daysInWindow) {
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
     var parsedDate = new Date(Date.parse(date));
     var now = new Date();
     
+    var debugNow = DateTime._getDebugNow();
     if (debugNow != null) now = new Date(Date.parse(debugNow));
     
     var utc1 = Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
@@ -78,12 +83,13 @@ class DateTime {
     return result;
   }
   
-  static isNowInWeek(date, debugNow) {
+  static isNowInWeek(date) {
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
     var parsedDate = new Date(Date.parse(date));
     var now = new Date();
 
+    var debugNow = DateTime._getDebugNow();
     if (debugNow != null) now = new Date(Date.parse(debugNow));
     
     var utcDate = Date.UTC(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
