@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>test Bb native code loading</title>
+    <meta charset="utf-8">
+  </head>
+  
+  <body>
+  
+    <span>
+      <span id='ktsContent'></span>
+      <button onclick="testLoad()">test load</button>
+    </span>
+
+    <script>
+      function testLoad() {
+        testHTML();
+      }
+    
+      const cssFiles = {
+        localbase: 'styles',
+        localfiles: ['main.css', 'standard_notice.css', 'clipboard_copy.css'],
+        otherfiles: [
+          {
+            href: 'https://use.fontawesome.com/releases/v5.8.2/css/all.css', 
+            integrity: 'sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay', 
+            crossorigin: 'anonymous'
+          }
+        ]
+      }
+    
+      const jsFiles = {
+        requireBase: 'scripts',
+        require: ['main', 'standard_notice', 'google_webapp_interface', 'create_element', 'markdowntohtml', 'clipboard_copy', 'date_time'],
+        otherBase: 'https://raw.githubusercontent.com/ktsanter/standard-shell/master/scripts',
+        other: ['commonmark_min.js', 'clipboard.min.js']
+      };
+//-----------------------------------------------------------------
+
+      initialize();
+      //document.addEventListener('DOMContentLoaded', testHTML);
+      
+//-----------------------------------------------------------------
+      async function initialize() {
+        await loadFiles(cssFiles, jsFiles);
+        console.log('done loading');
+        
+        lastToLoad(testHTML);
+      }
+      
+      function testHTML() {
+        console.log('testHTML');
+        var content = document.getElementById('ktsContent');
+        var elem = CreateElement.createDiv('testDiv', 'standard-title', 'some title');
+        content.appendChild(elem);
+      }
+      
+      async function lastToLoad(callback) {
+        var url = jsFiles.otherBase + '/last_to_load.js';
+        var requestResult = await makeRequest('GET', url);
+        var elem = document.createElement('script');
+        elem.innerHTML = requestResult;
+        elem.addEventListener('load', function() { callback(); }, false);
+        document.getElementsByTagName("head")[0].appendChild(elem);
+      }
+      
+//-----------------------------------------------------------------
+      async function loadFiles(cssFiles, jsFiles) {
+        var attachTo = document.getElementsByTagName("head")[0];
+        await loadCSSFiles(cssFiles, attachTo);
+        await loadJSFiles(jsFiles, attachTo);
+      }
+      
+      async function loadCSSFiles(config, attachTo) {
+        for (var i = 0; i < config.localfiles.length; i++) {
+          var href = config.localbase + '/' + config.localfiles[i];
+          var elem = document.createElement('link');
+          attachTo.appendChild(elem);
+          elem.href = href;
+          elem.rel = 'stylesheet';
+          elem.type = 'text/css'; 
+        }          
+      }
+      
+      async function loadJSFiles(config, attachTo) {
+        var scriptBase = config.requireBase;
+        var arrFileNames = config.require;
+        
+        var requestResult = await makeRequest('GET', 'https://raw.githubusercontent.com/ktsanter/standard-shell/master/scripts/require.js');
+        
+        appendScriptTag(requestResult, attachTo);
+
+        requirejs.config({ baseUrl: scriptBase });
+        requirejs(arrFileNames, function() {
+            loadOtherFiles(config, attachTo);
+          }
+        );
+      }
+      
+      async function loadOtherFiles(config, attachTo) {
+        var scriptBase = config.otherBase;
+        var arrFileNames = config.other;
+        
+        for (var i = 0; i < arrFileNames.length; i++) {
+          var url = scriptBase + '/' + arrFileNames[i];
+          var requestResult = await makeRequest('GET', url);
+          appendScriptTag(requestResult, attachTo);
+        }
+      }
+
+//-----------------------------------------------------------------
+      function appendScriptTag(html, attachTo) {
+        var elem = document.createElement('script');
+        attachTo.appendChild(elem);
+        elem.innerHTML = html;
+      }
+      
+//-----------------------------------------------------------------
+      function makeRequest(method, url) {
+          return new Promise(function (resolve, reject) {
+              let xhr = new XMLHttpRequest();
+              xhr.open(method, url);
+              xhr.onload = function () {
+                  if (this.status >= 200 && this.status < 300) {
+                      resolve(xhr.response);
+                  } else {
+                      reject({
+                          status: this.status,
+                          statusText: xhr.statusText
+                      });
+                  }
+              };
+              xhr.onerror = function () {
+                  reject({
+                      status: this.status,
+                      statusText: xhr.statusText
+                  });
+              };
+              xhr.send();
+          });
+      }    
+    </script>
+  </body>
+</html>
