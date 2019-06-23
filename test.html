@@ -56,11 +56,17 @@
       }
       
       async function lastToLoad(callback) {
+        console.log('starting last to load...');
         var url = jsFiles.otherBase + '/last_to_load.js';
         var requestResult = await makeRequest('GET', url);
+        console.log('done with last_to_load GET');
+        
         var elem = document.createElement('script');
         elem.innerHTML = requestResult;
-        elem.addEventListener('load', function() { callback(); }, false);
+        elem.addEventListener('load', function() {
+          console.log('load event for last_to_load');        
+          callback(); 
+        }, false);
         document.getElementsByTagName("head")[0].appendChild(elem);
       }
       

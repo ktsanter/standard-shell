@@ -1,2 +1,1 @@
-class LastToLoad {
-}
+console.log('last_to_load');
